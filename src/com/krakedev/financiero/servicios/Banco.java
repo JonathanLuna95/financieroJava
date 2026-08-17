@@ -4,9 +4,9 @@ import com.krakedev.financiero.entidades.Cliente;
 import com.krakedev.financiero.entidades.Cuenta;
 
 public class Banco {
-	
+
 	private int ultimoCodigo = 1000;
-	
+
 	public Banco() {
 
 	}
@@ -18,7 +18,7 @@ public class Banco {
 	public void setUltimoCodigo(int ultimoCodigo) {
 		this.ultimoCodigo = ultimoCodigo;
 	}
-	
+
 	public Cuenta crearCuenta(Cliente cliente) {
 
 		String codigoStr = ultimoCodigo + "";
@@ -31,7 +31,15 @@ public class Banco {
 
 		return cuenta;
 	}
-	
-	
+
+	public boolean depositar(double monto, Cuenta cuenta) {
+
+		if (monto > 0) {
+			cuenta.setSaldoActual(cuenta.getSaldoActual() + monto);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

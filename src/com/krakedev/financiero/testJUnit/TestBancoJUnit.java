@@ -23,5 +23,31 @@ public class TestBancoJUnit {
 		assertEquals("1000", cuenta1.getId());
 		assertEquals("1001", cuenta2.getId());
 	}
+	
+	@Test
+	public void testDepositarMontoValido() {
+
+		Banco banco = new Banco();
+		Cliente cliente = new Cliente("1723919591", "Jonathan", "Luna");
+		Cuenta cuenta = banco.crearCuenta(cliente);
+
+		boolean resultado = banco.depositar(500.00, cuenta);
+
+		assertEquals(true, resultado);
+		assertEquals(500.00, cuenta.getSaldoActual(), 0.0001);
+	}
+	
+	@Test
+	public void testDepositarMontoInvalido() {
+
+		Banco banco = new Banco();
+		Cliente cliente = new Cliente("1723919591", "Jonathan", "Luna");
+		Cuenta cuenta = banco.crearCuenta(cliente);
+
+		boolean resultado = banco.depositar(-100.00, cuenta);
+
+		assertEquals(false, resultado);
+		assertEquals(0.0, cuenta.getSaldoActual(), 0.0001);
+	}
 
 }
