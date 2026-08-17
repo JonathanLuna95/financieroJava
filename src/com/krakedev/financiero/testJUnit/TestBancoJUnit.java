@@ -9,7 +9,7 @@ import com.krakedev.financiero.entidades.Cuenta;
 import com.krakedev.financiero.servicios.Banco;
 
 public class TestBancoJUnit {
-	
+
 	@Test
 	public void testCrearCuentasConCodigosConsecutivos() {
 
@@ -23,7 +23,7 @@ public class TestBancoJUnit {
 		assertEquals("1000", cuenta1.getId());
 		assertEquals("1001", cuenta2.getId());
 	}
-	
+
 	@Test
 	public void testDepositarMontoValido() {
 
@@ -36,7 +36,7 @@ public class TestBancoJUnit {
 		assertEquals(true, resultado);
 		assertEquals(500.00, cuenta.getSaldoActual(), 0.0001);
 	}
-	
+
 	@Test
 	public void testDepositarMontoInvalido() {
 
@@ -49,7 +49,7 @@ public class TestBancoJUnit {
 		assertEquals(false, resultado);
 		assertEquals(0.0, cuenta.getSaldoActual(), 0.0001);
 	}
-	
+
 	@Test
 	public void testRetirarMontoValido() {
 
@@ -64,7 +64,7 @@ public class TestBancoJUnit {
 		assertEquals(true, resultado);
 		assertEquals(300.00, cuenta.getSaldoActual(), 0.0001);
 	}
-	
+
 	@Test
 	public void testRetirarSaldoInsuficiente() {
 
@@ -78,6 +78,42 @@ public class TestBancoJUnit {
 
 		assertEquals(false, resultado);
 		assertEquals(100.00, cuenta.getSaldoActual(), 0.0001);
+	}
+
+	@Test
+	public void testTransferirExitoso() {
+
+		Banco banco = new Banco();
+		Cliente cliente = new Cliente("1723919591", "Jonathan", "Luna");
+
+		Cuenta origen = banco.crearCuenta(cliente);
+		Cuenta destino = banco.crearCuenta(cliente);
+
+		banco.depositar(500.00, origen);
+
+		boolean resultado = banco.transferir(origen, destino, 200.00);
+
+		assertEquals(true, resultado);
+		assertEquals(300.00, origen.getSaldoActual(), 0.0001);
+		assertEquals(200.00, destino.getSaldoActual(), 0.0001);
+	}
+
+	@Test
+	public void testTransferirSaldoInsuficiente() {
+
+		Banco banco = new Banco();
+		Cliente cliente = new Cliente("1723919591", "Jonathan", "Luna");
+
+		Cuenta origen = banco.crearCuenta(cliente);
+		Cuenta destino = banco.crearCuenta(cliente);
+
+		banco.depositar(100.00, origen);
+
+		boolean resultado = banco.transferir(origen, destino, 200.00);
+
+		assertEquals(false, resultado);
+		assertEquals(100.00, origen.getSaldoActual(), 0.0001);
+		assertEquals(0.00, destino.getSaldoActual(), 0.0001);
 	}
 
 }
